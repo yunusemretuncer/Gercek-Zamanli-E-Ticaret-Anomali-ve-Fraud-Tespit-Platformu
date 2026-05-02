@@ -369,6 +369,32 @@ bash auto-test.sh [--duration=60] [--rate=2] [--anomaly-chance=30]
 
 ---
 
+## CI/CD
+
+Proje, GitHub Actions ile otomatik CI pipeline'ına sahiptir. Her `main` branch'e push veya pull request açıldığında tetiklenir.
+
+### Pipeline Adımları
+
+1. **Checkout** — Kod repodan çekilir
+2. **Docker Buildx** — Multi-platform build ortamı kurulur
+3. **Build** — Tüm servisler (`docker compose build`) derlenir
+4. **Smoke Test** — Altyapı servisleri (db, rabbitmq, redis) ayağa kaldırılır, API başlatılır, `GET /health` endpoint'i kontrol edilir
+5. **Teardown** — Test ortamı temizlenir (`docker compose down -v`)
+
+### Workflow Dosyası
+
+`.github/workflows/ci.yml` — Her push'ta otomatik çalışır. GitHub Actions sekmesinden sonuçları takip edebilirsiniz.
+
+```yaml
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+```
+
+---
+
 ## Sorun Giderme
 
 ### `docker compose up --build` başarısız
