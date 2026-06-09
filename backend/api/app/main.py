@@ -4,6 +4,7 @@ import logging
 import threading
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 
 import pika
 from fastapi import FastAPI
@@ -14,6 +15,7 @@ from shared.config import get_settings
 from shared.db.session import Base, engine
 from shared.messaging.publisher import RabbitMQPublisher
 from shared.models import transaction  # noqa: F401
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -113,6 +115,9 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
+
+# Prometheus metrics
+Instrumentator().instrument(app).expose(app)
 app.include_router(transactions.router)
 app.include_router(websocket.router)
 
@@ -120,3 +125,4 @@ app.include_router(websocket.router)
 @app.get("/", tags=["root"])
 def root() -> dict[str, str]:
     return {"name": settings.app_name, "version": settings.app_version}
+
