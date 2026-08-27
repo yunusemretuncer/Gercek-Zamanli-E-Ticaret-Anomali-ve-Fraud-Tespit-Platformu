@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: worker
+  labels:
+    app: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      name: worker-pod
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker
+        image: gercek-zamanli-e-ticaret-anomali-ve-fraud-tespit-platformu-worker
+        imagePullPolicy: IfNotPresent 
+        envFrom:
+        - configMapRef:
+            name: worker-config
+        - secretRef:
+            name: worker-secret

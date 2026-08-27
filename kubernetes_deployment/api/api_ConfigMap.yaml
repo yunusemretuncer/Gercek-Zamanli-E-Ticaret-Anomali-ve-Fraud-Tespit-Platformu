@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+data:
+  POSTGRES_USER: "fraud"
+  POSTGRES_DB: "fraud_db"
+  POSTGRES_HOST: "db"
+  POSTGRES_PORT: "5432"
+
+  RABBITMQ_USER: "guest"
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_PORT: "5672"
