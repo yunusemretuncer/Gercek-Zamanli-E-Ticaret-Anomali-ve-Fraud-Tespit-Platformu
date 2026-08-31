@@ -6,8 +6,11 @@ import FraudRateChart from "./components/FraudRateChart";
 import UserView from "./components/UserView";
 import "./index.css";
 
-const API = "http://localhost:8000";
-const WS  = "ws://localhost:8000/ws/transactions";
+const API = "/api";
+
+const WS =
+  `${window.location.protocol === "https:" ? "wss:" : "ws:"}` +
+  `//${window.location.host}/ws/transactions`;
 
 export default function App() {
   const [transactions, setTransactions] = useState([]);

@@ -104,6 +104,7 @@ app = FastAPI(
     title=f"{settings.app_name} - API",
     version=settings.app_version,
     lifespan=lifespan,
+    root_path="/api",
 )
 
 app.add_middleware(

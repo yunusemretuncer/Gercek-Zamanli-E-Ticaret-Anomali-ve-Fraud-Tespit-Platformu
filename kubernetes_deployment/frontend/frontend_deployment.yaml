@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: gercek-zamanli-e-ticaret-anomali-ve-fraud-tespit-platformu-frontend:latest
+          image: fraud-frontend:latest
           imagePullPolicy: IfNotPresent
 
           ports:

@@ -3,7 +3,7 @@
 
 set -e
 
-API_URL="${API_URL:-http://localhost:8000}"
+API_URL="${API_URL:-http://fraud.local/api}"
 
 if [ "$#" -lt 3 ]; then
   echo "Usage: $0 <user_id> <amount> <location>"

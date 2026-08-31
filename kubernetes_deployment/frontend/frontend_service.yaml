@@ -4,12 +4,10 @@ metadata:
   name: frontend-service
 
 spec:
-  selector:
-    app: frontend
-
+  type: ClusterIP
   ports:
     - name: http
       port: 80
       targetPort: 80
-
-  type: NodePort
+  selector:
+    app: frontend

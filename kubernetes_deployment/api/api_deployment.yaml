@@ -18,7 +18,7 @@ spec:
       enableServiceLinks: false
       containers:
       - name: api
-        image: gercek-zamanli-e-ticaret-anomali-ve-fraud-tespit-platformu-api
+        image: fraud-api
         imagePullPolicy: IfNotPresent
         ports: 
         - containerPort: 8000

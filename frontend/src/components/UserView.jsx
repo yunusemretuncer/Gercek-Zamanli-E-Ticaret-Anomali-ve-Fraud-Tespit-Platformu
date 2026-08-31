@@ -12,7 +12,7 @@ export default function UserView() {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get(`http://localhost:8000/transactions/users/${userId}`);
+      const res = await axios.get(`/api/transactions/users/${userId}`);
       setTxs(res.data);
     } catch (e) {
       setError("Kullanıcı bulunamadı veya hata oluştu.");
