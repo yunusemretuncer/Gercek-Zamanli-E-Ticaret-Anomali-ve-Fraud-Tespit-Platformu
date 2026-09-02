@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: {{ include "fraud-platform.redis.fullname" . }}
+
+spec:
+  serviceName: {{ include "fraud-platform.redis.fullname" . }}
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: {{ include "fraud-platform.redis.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "fraud-platform.redis.fullname" . }}
+    spec:
+      containers:
+      - name: {{ include "fraud-platform.redis.fullname" . }}
+        image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.redis.port}}
+          name: {{ include "fraud-platform.redis.fullname" . }}
+        volumeMounts:
+        - name: {{ .Values.redis.volume.name}}
+          mountPath: {{ .Values.redis.volume.mountPath}}
+
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.redis.volume.name}}
+    spec:
+      accessModes: {{ .Values.redis.volume.accessModes}}
+      resources:
+        requests:
+          storage: {{ .Values.redis.volume.storage}}
+
+

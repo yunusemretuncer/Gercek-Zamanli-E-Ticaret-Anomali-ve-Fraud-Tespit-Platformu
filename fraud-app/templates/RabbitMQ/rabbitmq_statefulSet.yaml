@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: {{ include "fraud-platform.rabbitmq.fullname" . }}
+
+spec:
+  serviceName: {{ include "fraud-platform.rabbitmq.fullname" . }}
+  replicas: {{ .Values.rabbitmq.replicas}}
+  selector:
+    matchLabels:
+      app: {{ include "fraud-platform.rabbitmq.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "fraud-platform.rabbitmq.fullname" . }}
+    spec:
+      containers:
+      - name: {{ include "fraud-platform.rabbitmq.fullname" . }}
+        image: "{{ .Values.rabbitmq.image.repository }}:{{ .Values.rabbitmq.image.tag }}"
+        ports:
+        - name: amqp
+          containerPort: {{ .Values.rabbitmq.ports.amqp}}
+        - name: management
+          containerPort: {{ .Values.rabbitmq.ports.management}}
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: "guest" 
+        - name: RABBITMQ_DEFAULT_PASS
+          value: "guest" 
+
+        volumeMounts:
+        - name: {{ .Values.rabbitmq.volume.name}}
+          mountPath: {{ .Values.rabbitmq.volume.mountPath}}
+          
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.rabbitmq.volume.name}}
+    spec:
+      accessModes: {{ .Values.rabbitmq.volume.accessModes}}
+      resources:
+        requests:
+          storage: {{ .Values.rabbitmq.volume.storage}} 
+
+

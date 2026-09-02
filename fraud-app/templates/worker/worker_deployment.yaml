@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ include "fraud-platform.worker.fullname" . }}
+  labels:
+    app: {{ include "fraud-platform.worker.fullname" . }}
+spec:
+  replicas: {{ .Values.worker.replicas}}
+  selector:
+    matchLabels:
+      app: {{ include "fraud-platform.worker.fullname" . }}
+  template:
+    metadata:
+      name: {{ include "fraud-platform.worker.fullname" . }}
+      labels:
+        app: {{ include "fraud-platform.worker.fullname" . }}
+    spec:
+      containers:
+      - name: {{ include "fraud-platform.worker.fullname" . }}
+        image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag }}"
+        imagePullPolicy: {{ .Values.worker.image.pullPolicy }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "fraud-platform.worker.fullname" . }}-config
+        - secretRef:
+            name: {{ include "fraud-platform.worker.fullname" . }}-secret

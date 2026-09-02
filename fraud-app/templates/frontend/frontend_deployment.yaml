@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "fraud-platform.frontend.fullname" . }}
+
+spec:
+  replicas: {{ .Values.frontend.replicas}}
+
+  selector:
+    matchLabels:
+      app: {{ include "fraud-platform.frontend.fullname" . }}
+
+  template:
+    metadata:
+      labels:
+        app: {{ include "fraud-platform.frontend.fullname" . }}
+
+    spec:
+      containers:
+        - name: {{ include "fraud-platform.frontend.fullname" . }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.frontend.port}}
+              name: http

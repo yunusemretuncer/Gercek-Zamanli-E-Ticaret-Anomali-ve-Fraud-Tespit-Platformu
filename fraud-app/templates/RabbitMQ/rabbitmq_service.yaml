@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fraud-platform.rabbitmq.fullname" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: amqp
+      port: {{ .Values.rabbitmq.ports.amqp}}
+      targetPort: {{ .Values.rabbitmq.ports.amqp}}
+
+    - name: management
+      port: {{ .Values.rabbitmq.ports.management}}
+      targetPort: {{ .Values.rabbitmq.ports.management}}
+  selector:
+    app: {{ include "fraud-platform.rabbitmq.fullname" . }}

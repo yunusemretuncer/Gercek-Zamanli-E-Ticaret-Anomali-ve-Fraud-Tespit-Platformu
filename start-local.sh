@@ -2,7 +2,7 @@
 
 set -e
 
-APP_HOST="fraud.local"
+APP_HOST="fraud.deneme"
 APP_URL="http://${APP_HOST}"
 
 echo "[1/5] Minikube kontrol ediliyor..."

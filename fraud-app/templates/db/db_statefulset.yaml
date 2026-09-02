@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: {{ include "fraud-platform.db.fullname" . }}
+spec:
+  serviceName: {{ include "fraud-platform.db.fullname" . }}
+  replicas: {{ .Values.db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "fraud-platform.db.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "fraud-platform.db.fullname" . }}
+    spec:
+      containers:
+      - name: {{ include "fraud-platform.db.fullname" . }}
+        image: {{ .Values.db.image}}
+        ports:
+        - containerPort: {{.Values.db.port}}
+          name: {{ include "fraud-platform.db.fullname" . }}
+        env:
+        - name: POSTGRES_USER
+          value: "fraud"
+        - name: POSTGRES_PASSWORD
+          value: "fraud"
+        - name: POSTGRES_DB
+          value: "fraud_db"
+        volumeMounts:
+        - name:   {{ .Values.db.volume.name}}
+          mountPath: {{ .Values.db.volume.mountPath}}
+
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.db.volume.name}}
+    spec:
+      accessModes: {{ .Values.db.volume.accessModes}}
+      resources:
+        requests:
+          storage: {{ .Values.db.volume.storage}}

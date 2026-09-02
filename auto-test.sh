@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Usage: ./auto-test.sh [--duration=60] [--rate=2] [--anomaly-chance=30]
 
-API_URL="${API_URL:-http://fraud.local/api}"
+APP_HOST="fraud.deneme"
+API_URL="${API_URL:-http://${APP_HOST}/api}"
 
 # Defaults
 DURATION=60

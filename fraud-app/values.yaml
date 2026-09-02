@@ -1,0 +1,65 @@
+api:
+  image:
+    repository: fraud-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  port: 8000
+  replicas: 2
+
+ingress:
+  host:
+    name: fraud.deneme
+  className: nginx
+
+db:
+  image: postgres:16-alpine
+  port: 5432
+  replicas: 1
+  volume:
+    name: db-data
+    mountPath: /var/lib/postgresql/data
+    storage: 5Gi
+    accessModes: [ "ReadWriteOnce" ]
+
+frontend:
+  image:
+    repository: fraud-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  port: 80
+  replicas: 1
+
+rabbitmq:
+  image:
+    repository: rabbitmq
+    tag: 3.13-management-alpine
+  ports:
+    amqp: 5672
+    management: 15672
+  replicas: 1
+  volume:
+    name: rabbitmq-data
+    mountPath: /var/lib/rabbitmq
+    storage: 5Gi
+    accessModes: [ "ReadWriteOnce" ]
+
+redis:
+  image:
+    repository: redis
+    tag: 7-alpine
+  port: 6379
+  replicas: 1
+  volume:
+    name: redis-data
+    mountPath: /data
+    storage: 5Gi
+    accessModes: [ "ReadWriteOnce" ]
+
+    
+    
+worker:
+  image:
+    repository: gercek-zamanli-e-ticaret-anomali-ve-fraud-tespit-platformu-worker
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
