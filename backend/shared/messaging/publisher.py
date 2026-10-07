@@ -6,6 +6,7 @@ from typing import Any
 import pika
 from pika.adapters.blocking_connection import BlockingChannel
 from pika.exceptions import AMQPConnectionError, AMQPError
+from shared.messaging.topology import declare_topology
 
 from shared.config import Settings
 
@@ -47,29 +48,9 @@ class RabbitMQPublisher:
             self._connection = pika.BlockingConnection(self._params)
         self._channel = self._connection.channel()
 
-        # Declare topology. Idempotent â€” safe to call repeatedly.
-        self._channel.exchange_declare(
-            exchange=self._settings.rabbitmq_exchange,
-            exchange_type="topic",
-            durable=True,
-        )
-        # transactions queue
-        self._channel.queue_declare(
-            queue=self._settings.rabbitmq_transactions_queue, durable=True
-        )
-        self._channel.queue_bind(
-            queue=self._settings.rabbitmq_transactions_queue,
-            exchange=self._settings.rabbitmq_exchange,
-            routing_key=self._settings.rabbitmq_transactions_routing_key,
-        )
-        # fraud alerts queue
-        self._channel.queue_declare(
-            queue=self._settings.rabbitmq_fraud_alerts_queue, durable=True
-        )
-        self._channel.queue_bind(
-            queue=self._settings.rabbitmq_fraud_alerts_queue,
-            exchange=self._settings.rabbitmq_exchange,
-            routing_key=self._settings.rabbitmq_fraud_alerts_routing_key,
+        declare_topology(
+            self._channel,
+            self._settings,
         )
 
     def publish(self, payload: dict[str, Any], routing_key: str) -> None:

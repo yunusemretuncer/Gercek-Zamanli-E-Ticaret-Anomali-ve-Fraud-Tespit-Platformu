@@ -59,7 +59,7 @@ redis:
     
 worker:
   image:
-    repository: gercek-zamanli-e-ticaret-anomali-ve-fraud-tespit-platformu-worker
+    repository: fraud-worker
     tag: latest
     pullPolicy: IfNotPresent
   replicas: 1

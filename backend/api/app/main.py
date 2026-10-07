@@ -15,6 +15,7 @@ from shared.config import get_settings
 from shared.db.session import Base, engine
 from shared.messaging.publisher import RabbitMQPublisher
 from shared.models import transaction  # noqa: F401
+from shared.messaging.topology import declare_topology
 
 
 logging.basicConfig(level=logging.INFO)
@@ -53,6 +54,7 @@ def _fraud_consumer_thread(loop: asyncio.AbstractEventLoop):
             )
             connection = pika.BlockingConnection(params)
             channel = connection.channel()#tcp connection
+            declare_topology(channel, settings)
             channel.basic_qos(prefetch_count=1)#one message at a time 
             channel.basic_consume(
                 queue=settings.rabbitmq_fraud_alerts_queue,
