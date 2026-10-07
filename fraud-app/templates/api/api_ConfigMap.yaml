@@ -5,9 +5,9 @@ metadata:
 data:
   POSTGRES_USER: "fraud"
   POSTGRES_DB: "fraud_db"
-  POSTGRES_HOST: "db"
-  POSTGRES_PORT: "5432"
+  POSTGRES_HOST: {{ include "fraud-platform.db.fullname" . | quote }}
+  POSTGRES_PORT: {{ .Values.db.port | quote }}
 
   RABBITMQ_USER: "guest"
-  RABBITMQ_HOST: "rabbitmq"
-  RABBITMQ_PORT: "5672"
+  RABBITMQ_HOST: {{ include "fraud-platform.rabbitmq.fullname" . | quote }}
+  RABBITMQ_PORT: {{ .Values.rabbitmq.ports.amqp | quote }}
