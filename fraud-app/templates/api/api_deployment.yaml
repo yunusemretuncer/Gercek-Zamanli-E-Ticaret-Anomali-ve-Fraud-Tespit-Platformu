@@ -28,3 +28,10 @@ spec:
             name: {{ include "fraud-platform.api.fullname" . }}-config
         - secretRef:
             name: {{ include "fraud-platform.api.fullname" . }}-secret
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi    
